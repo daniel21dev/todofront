@@ -1,10 +1,15 @@
-import { Button } from "@mui/material";
+import { Button, CssBaseline, Typography } from "@mui/material";
+import {Edit} from "@mui/icons-material"
+import axios from './config/axios'
 
 function App() {
   return (
     <div className="App">
-      <h1>Hola mundo</h1>
-      <Button variant="outlined">Hola mundo</Button>
+      <CssBaseline />
+      <Typography variant="h3">Hola mundo</Typography>
+      <Button variant="outlined">
+        <Edit fontSize="4"/>
+        Hola mundo</Button>
     </div>
   );
 }
