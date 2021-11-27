@@ -3,10 +3,14 @@ import React from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import useStyles from '../../styles'
+import axios from '../../config/axios'
+import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router'
 
 export const LoginForm = () => {
 
     const classes = useStyles()
+    let navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -20,8 +24,16 @@ export const LoginForm = () => {
             password: Yup.string()
                 .required('the password is required')
         }),
-        onSubmit: async ({ email, password }) => {
-            console.log({ email, password });
+        onSubmit: async (formData) => {
+            try {
+                const { data } = await axios.post('/login', formData)
+                localStorage.setItem('token', data.token)
+                navigate('/')
+            } catch (error) {
+                console.log(error);
+                let msgError = 'error doing login :('
+                toast.error(msgError)
+            }
         }
     })
 
@@ -38,7 +50,7 @@ export const LoginForm = () => {
                 type="email"
                 variant="outlined"
                 helperText={formik.errors.email}
-                error={ formik.errors.email }
+                error={formik.touched.email && formik.errors.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
@@ -50,7 +62,7 @@ export const LoginForm = () => {
                 type="password"
                 variant="outlined"
                 helperText={formik.errors.password}
-                error={ formik.errors.password }
+                error={formik.touched.password && formik.errors.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.password}

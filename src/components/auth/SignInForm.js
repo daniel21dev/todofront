@@ -3,10 +3,14 @@ import { Button, Link, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import useStyles from '../../styles'
+import axios from '../../config/axios'
+import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router'
 
 export const SignInForm = () => {
 
     const classes = useStyles()
+    let navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -15,14 +19,24 @@ export const SignInForm = () => {
             password: ''
         },
         validationSchema: Yup.object({
+            name: Yup.string()
+                .required('the name is required'),
             email: Yup.string()
                 .email('the email is not valid')
                 .required('the email is required'),
             password: Yup.string()
                 .required('the password is required')
         }),
-        onSubmit: async ({ email, password }) => {
-            console.log({ email, password });
+        onSubmit: async (formData) => {
+            try {
+                const { data } = await axios.post('/users', formData)
+                localStorage.setItem('token', data.token)
+                navigate('/')
+            } catch (error) {
+                console.log(error);
+                let msgError = 'error saving user'
+                toast.error(msgError)
+            }
         }
     })
 
@@ -39,7 +53,7 @@ export const SignInForm = () => {
                 type="text"
                 variant="outlined"
                 helperText={formik.errors.name}
-                error={ formik.errors.name }
+                error={ formik.touched.name && formik.errors.name }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
@@ -51,7 +65,7 @@ export const SignInForm = () => {
                 type="email"
                 variant="outlined"
                 helperText={formik.errors.email}
-                error={ formik.errors.email }
+                error={ formik.touched.email && formik.errors.email }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
@@ -63,7 +77,7 @@ export const SignInForm = () => {
                 type="password"
                 variant="outlined"
                 helperText={formik.errors.password}
-                error={ formik.errors.password }
+                error={ formik.touched.password && formik.errors.password }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
