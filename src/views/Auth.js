@@ -49,7 +49,9 @@ const Auth = () => {
                                     <SignInForm />
                                 )
                             }
+                            
                             <Link
+                                className={classes.link}
                                 onClick={hanldeChangeForm}
                             >Or {opposedForms[form]}</Link>
                         </CardContent>
