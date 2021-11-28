@@ -33,8 +33,8 @@ export const SignInForm = () => {
                 localStorage.setItem('token', data.token)
                 navigate('/')
             } catch (error) {
-                console.log(error);
-                let msgError = 'error saving user'
+                console.log(error.response.data);
+                let msgError =  error.response?.data?.errors[0]?.msg || 'error saving user'
                 toast.error(msgError)
             }
         }

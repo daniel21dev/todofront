@@ -17,7 +17,7 @@ export const TodosProvider = ({ children }) => {
 
     const getTodos = async () => {
         try {
-            const { data } = await axios.get('/todos')
+            const { data } = await axios.get('/todos?pageLength=100')
             setTodos(data.todos);
         } catch (error) {
             console.log(error);

@@ -29,7 +29,8 @@ export const TodoForm = () => {
             try {
                 formData.dueDate = date;
                 if (!todoToUpdate) {
-                    return createTodo(formData)
+                    createTodo(formData)
+                    return formik.resetForm()
                 }
                 updateTodo(todoToUpdate.id, formData);
             } catch (error) {
