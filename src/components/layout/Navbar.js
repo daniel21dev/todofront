@@ -7,9 +7,10 @@ import { useNavigate } from "react-router";
 
 export const Navbar = () => {
     let navigate = useNavigate();
-    const handleLogout = () =>{
+    const handleLogout = () => {
         logout(navigate)
     }
+    const user = JSON.parse(localStorage.getItem('user')) || {};
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -18,13 +19,22 @@ export const Navbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         TODO APP
                     </Typography>
-                    
-                    <Button 
-                        color="inherit"
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </Button>
+
+                    <div style={{
+                        display:'flex',
+                        alignItems: 'center',
+                        }}>
+                        <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
+                            hello {user.name} 
+                        </Typography>
+                        <Button
+                            color="inherit"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </Button>
+                    </div>
+
                 </Toolbar>
             </AppBar>
         </Box>

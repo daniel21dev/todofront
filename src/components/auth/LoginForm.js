@@ -28,6 +28,7 @@ export const LoginForm = () => {
             try {
                 const { data } = await axios.post('/login', formData)
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('user',JSON.stringify(data.user))
                 navigate('/')
             } catch (error) {
                 console.log(error);
