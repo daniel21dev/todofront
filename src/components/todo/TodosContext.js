@@ -1,6 +1,9 @@
 import { createContext, useState } from 'react';
-import axios from '../../config/axios'
+import {authAxios} from '../../config/axios'
 import { toast } from 'react-hot-toast'
+import {useNavigate} from 'react-router-dom'
+import { handleUnauthorized } from '../../helpers/handleUnauthorized';
+
 
 export const TodosContex = createContext();
 
@@ -8,6 +11,9 @@ export const TodosProvider = ({ children }) => {
 
     const [todos, setTodos] = useState([])
     const [todoToUpdate, setTodoToUpdate] = useState(null)
+    let navigate = useNavigate();
+    const token = localStorage.getItem('token')
+    const axios = authAxios(token)
 
     const getTodos = async () => {
         try {
@@ -16,6 +22,9 @@ export const TodosProvider = ({ children }) => {
         } catch (error) {
             console.log(error);
             toast.error('error getting todos')
+            if( error.response.status === 401 ){
+                handleUnauthorized(navigate)
+            }
         }
     }
 

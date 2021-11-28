@@ -1,8 +1,14 @@
 import axios from 'axios'
 
-const token = localStorage.getItem('token') || ''
 
 export default axios.create({
-    baseURL: 'http://localhost:8080/api/v1/',
-    headers: { 'x-token':  localStorage.getItem('token') || ''}
+    baseURL: `http://localhost:8080/api/v1/`,
+    headers: { 'x-token':  ''}
 });
+
+export const authAxios = (token) =>{
+    return axios.create({
+        baseURL: `http://localhost:8080/api/v1/`,
+        headers: { 'x-token':  token}
+    });
+}

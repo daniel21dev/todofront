@@ -3,26 +3,39 @@ import { Button, Card, CardContent, Checkbox, ListItem, Typography } from '@mui/
 import React, { useContext, useState } from 'react'
 import useStyles from './styles'
 import { TodosContex } from './TodosContext';
+import Swal from 'sweetalert2'
 
 const label = { inputProps: { 'aria-label': 'completed' } };
 
 export const Todo = ({ todo }) => {
 
-    
+
     const classes = useStyles()
     const [checked, setChecked] = useState(todo.completed)
-    const {handleComplete,deleteTodo, setTodoToUpdate, todoToUpdate} = useContext(TodosContex)
+    const { handleComplete, deleteTodo, setTodoToUpdate, todoToUpdate } = useContext(TodosContex)
 
     const handleCheck = (e) => {
         setChecked(e.target.checked)
         handleComplete(todo, e.target.checked)
     }
 
-    const handleDelete = () =>{
-        deleteTodo(todo.id)
+    const handleDelete = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteTodo(todo.id)
+            }
+        })
     }
 
-    const handleUpdate = () =>{
+    const handleUpdate = () => {
         setTodoToUpdate(todo)
     }
 
@@ -54,7 +67,7 @@ export const Todo = ({ todo }) => {
                     </ListItem>
 
                     <Typography gutterBottom>Description: {todo.content}</Typography>
-                    <Typography gutterBottom>Due date:{ new Date(todo.dueDate).toLocaleDateString()}</Typography>
+                    <Typography gutterBottom>Due date:{new Date(todo.dueDate).toLocaleDateString()}</Typography>
                     <Typography gutterBottom>{todo.completed}</Typography>
                 </CardContent>
             </Card>
