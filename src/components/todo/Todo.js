@@ -1,25 +1,36 @@
 import { CheckCircleOutlined, CheckCircleOutline, Edit, Delete } from '@mui/icons-material'
 import { Button, Card, CardContent, Checkbox, ListItem, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import useStyles from './styles'
+import { TodosContex } from './TodosContext';
 
 const label = { inputProps: { 'aria-label': 'completed' } };
 
-export const Todo = ({ todo, handleComplete }) => {
+export const Todo = ({ todo }) => {
 
+    
     const classes = useStyles()
     const [checked, setChecked] = useState(todo.completed)
+    const {handleComplete,deleteTodo, setTodoToUpdate, todoToUpdate} = useContext(TodosContex)
 
     const handleCheck = (e) => {
         setChecked(e.target.checked)
         handleComplete(todo, e.target.checked)
     }
 
+    const handleDelete = () =>{
+        deleteTodo(todo.id)
+    }
+
+    const handleUpdate = () =>{
+        setTodoToUpdate(todo)
+    }
+
     return (
         <div>
             <Card className={classes.cardTodo}>
                 <CardContent >
-                    <ListItem divider>
+                    <div>
                         <Checkbox {...label}
                             color="success"
                             checked={checked}
@@ -27,19 +38,23 @@ export const Todo = ({ todo, handleComplete }) => {
                             icon={<CheckCircleOutline />}
                             checkedIcon={<CheckCircleOutlined />}
                         />
-                        <Typography gutterBottom>{todo.title}</Typography>
-                        <div>
-                            <Button>
-                                <Edit />
-                            </Button>
-                            <Button>
-                                <Delete color="error"/>
-                            </Button>
-                        </div>
+                        <Button
+                            onClick={handleUpdate}
+                        >
+                            <Edit />
+                        </Button>
+                        <Button
+                            onClick={handleDelete}
+                        >
+                            <Delete color="error" />
+                        </Button>
+                        <Typography gutterBottom>Title: {todo.title}</Typography>
+                    </div>
+                    <ListItem divider>
                     </ListItem>
 
-                    <Typography gutterBottom>{todo.content}</Typography>
-                    <Typography gutterBottom>{todo.dueDate}</Typography>
+                    <Typography gutterBottom>Description: {todo.content}</Typography>
+                    <Typography gutterBottom>Due date:{ new Date(todo.dueDate).toLocaleDateString()}</Typography>
                     <Typography gutterBottom>{todo.completed}</Typography>
                 </CardContent>
             </Card>

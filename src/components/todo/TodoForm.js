@@ -1,5 +1,5 @@
 import { Button, Card, CardContent, CardHeader, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
@@ -8,11 +8,12 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import axios from '../../config/axios'
 import { toast } from 'react-hot-toast'
+import { TodosContex } from './TodosContext';
 
-export const TodoForm = ({addTodo}) => {
+export const TodoForm = () => {
 
     const [date, setDate] = useState(new Date())
-    const classes = useStyles()
+    const { createTodo, todoToUpdate, setTodoToUpdate, updateTodo } = useContext(TodosContex)
 
     const formik = useFormik({
         initialValues: {
@@ -27,22 +28,44 @@ export const TodoForm = ({addTodo}) => {
         onSubmit: async (formData) => {
             try {
                 formData.dueDate = date;
-                const { data } = await axios.post('/todos', formData)
-                toast.success('todo created')
-                addTodo( data.todo)
+                if (!todoToUpdate) {
+                    return createTodo(formData)
+                }
+                updateTodo(todoToUpdate.id, formData);
             } catch (error) {
                 console.log(error);
-                let msgError = 'error creting todo :('
+                let msgError = 'error creating todo :('
                 toast.error(msgError)
             }
         }
     })
 
+    useEffect(() => {
+        if (todoToUpdate) {
+            formik.setValues({
+                title: todoToUpdate.title,
+                content: todoToUpdate.content
+            })
+            setDate(new Date(todoToUpdate.dueDate))
+        }
+    }, [todoToUpdate])
+
+    const classes = useStyles()
+
+    const handleCancel = () => {
+        formik.resetForm()
+        setTodoToUpdate(null)
+    }
+
     return (
         <div>
             <Card className={classes.cardForm}>
                 <CardContent >
-                    <Typography gutterBottom>Add a ToDo</Typography>
+                    <Typography gutterBottom>
+                        {
+                            todoToUpdate ? 'Update todo' : 'Add a ToDo'
+                        }
+                    </Typography>
                     <form
                         className={classes.form}
                         onSubmit={formik.handleSubmit}
@@ -83,12 +106,23 @@ export const TodoForm = ({addTodo}) => {
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
-                        <Button 
+                        <Button
                             variant="outlined"
                             type="submit"
-                            >
+                        >
                             Save
                         </Button>
+                        {
+                            todoToUpdate && (
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    onClick={handleCancel}
+                                >
+                                    Cancel
+                                </Button>
+                            )
+                        }
                     </form>
                 </CardContent>
             </Card>
