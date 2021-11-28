@@ -2,13 +2,13 @@ import axios from 'axios'
 
 
 export default axios.create({
-    baseURL: `http://localhost:8080/api/v1/`,
+    baseURL: process.env.REACT_APP_API_URL,
     headers: { 'x-token':  ''}
 });
 
 export const authAxios = (token) =>{
     return axios.create({
-        baseURL: `http://localhost:8080/api/v1/`,
+        baseURL: process.env.REACT_APP_API_URL,
         headers: { 'x-token':  token}
     });
 }
