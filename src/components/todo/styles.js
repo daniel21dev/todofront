@@ -10,7 +10,12 @@ const useStyles = makeStyles((theme)=>({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-    }
+    },
+    cardTodo:{
+        height: 'auto',
+        margin: '1rem',
+        padding: '1rem'
+    },
 }))
 
 export default useStyles

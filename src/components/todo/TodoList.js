@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Todo } from './Todo';
 
-export const TodoList = () => {
+
+export const TodoList = ({todos, handleComplete}) => {
+
     return (
-        <div>
-            
-        </div>
-    )
+        todos.map(todo => (
+            <Todo 
+                key={todo.id} 
+                todo={todo} 
+                handleComplete={handleComplete}
+                />
+        ))
+    );
 }

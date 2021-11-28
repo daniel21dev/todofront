@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import axios from '../../config/axios'
 import { toast } from 'react-hot-toast'
 
-export const TodoForm = () => {
+export const TodoForm = ({addTodo}) => {
 
     const [date, setDate] = useState(new Date())
     const classes = useStyles()
@@ -28,8 +28,8 @@ export const TodoForm = () => {
             try {
                 formData.dueDate = date;
                 const { data } = await axios.post('/todos', formData)
-                console.log(data);
                 toast.success('todo created')
+                addTodo( data.todo)
             } catch (error) {
                 console.log(error);
                 let msgError = 'error creting todo :('
