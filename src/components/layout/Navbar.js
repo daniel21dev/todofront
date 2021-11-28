@@ -1,13 +1,14 @@
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import {Menu} from '@mui/icons-material'
 import { Link } from 'react-router-dom'
+import { logout } from '../../helpers/logout'
+import { useNavigate } from "react-router";
 
 export const Navbar = () => {
-
+    let navigate = useNavigate();
     const handleLogout = () =>{
-        console.log('logout');
+        logout(navigate)
     }
 
     return (
@@ -17,7 +18,7 @@ export const Navbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         TODO APP
                     </Typography>
-                    <Link to="/auth">About</Link>
+                    
                     <Button 
                         color="inherit"
                         onClick={handleLogout}

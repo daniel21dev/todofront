@@ -1,13 +1,10 @@
-import { Button, CssBaseline, Typography } from "@mui/material";
-import axios from './config/axios'
-import { Navbar } from "./components/layout/Navbar";
+import { CssBaseline} from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import Auth from "./views/Auth";
 import {Home} from './views/Home'
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  const isLoggedIn = !!localStorage.getItem('token');
   return (
     <>
       <CssBaseline />
