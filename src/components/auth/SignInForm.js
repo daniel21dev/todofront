@@ -31,7 +31,7 @@ export const SignInForm = () => {
             try {
                 const { data } = await axios.post('/users', formData)
                 localStorage.setItem('token', data.token)
-                localStorage.setItem('user', data.user)
+                localStorage.setItem('user', JSON.stringify(data.user))
                 navigate('/')
             } catch (error) {
                 console.log(error.response.data);
