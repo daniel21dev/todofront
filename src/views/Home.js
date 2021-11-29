@@ -5,13 +5,6 @@ import { TodoForm } from '../components/todo/TodoForm'
 import { TodoList } from '../components/todo/TodoList'
 import {useNavigate} from 'react-router-dom'
 export const Home = () => {
-    
-    let navigate = useNavigate();
-
-    if(localStorage.getItem('token')){
-        navigate('/auth')
-    }   
-
     return (
         <>
             <Navbar />

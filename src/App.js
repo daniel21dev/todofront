@@ -4,6 +4,8 @@ import Auth from "./views/Auth";
 import {Home} from './views/Home'
 import { Toaster } from "react-hot-toast";
 import { TodosProvider } from "./components/todo/TodosContext";
+import { PrivateOutlet } from "./routes/PrivateOutlet";
+import { PublicOutlet } from "./routes/PublicOutlet";
 
 function App() {
   return (
@@ -11,8 +13,12 @@ function App() {
       <CssBaseline />
       <div><Toaster/></div>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="auth" element={<Auth />} />
+        <Route path="/" element={<PrivateOutlet />}>
+          <Route index element={<Home />} />
+        </Route>
+        <Route path="/auth" element={<PublicOutlet />}>
+          <Route index element={<Auth />} />
+        </Route>
       </Routes>
     </TodosProvider>
   );
